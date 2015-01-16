@@ -4540,17 +4540,26 @@ var DayGrid = Grid.extend({
 		);
 		trEl = skeletonEl.find('tr');
 
-		if (startCol > 0) {
-			trEl.append('<td colspan="' + startCol + '"/>');
-		}
-
-		trEl.append(
-			seg.el.attr('colspan', endCol - startCol)
-		);
-
-		if (endCol < colCnt) {
-			trEl.append('<td colspan="' + (colCnt - endCol) + '"/>');
-		}
+		// Fixes ie10- bug selected state
+		var i = 0;
+		while (i < startCol) {
+			trEl.append('<td/>');
+			i++;
+		};
+		
+		i = 0;
+		while (i < (endCol - startCol)) {
+			trEl.append(
+				seg.el.clone(true)
+			);
+			i++;
+		};
+		
+		i = 0;
+		while (i < (colCnt - endCol)) {
+			trEl.append('<td/>');
+			i++;
+		};
 
 		this.bookendCells(trEl, type);
 
